@@ -1029,9 +1029,6 @@ a:active {
 .join__evolution .form__block div input::-moz-placeholder {
   color: #fff;
 }
-.join__evolution .form__block div input:-ms-input-placeholder {
-  color: #fff;
-}
 .join__evolution .form__block div input::placeholder {
   color: #fff;
 }
@@ -1431,9 +1428,6 @@ a:active {
   letter-spacing: -0.28px;
 }
 .schedule__form .form__item input::-moz-placeholder {
-  color: #000;
-}
-.schedule__form .form__item input:-ms-input-placeholder {
   color: #000;
 }
 .schedule__form .form__item input::placeholder {
