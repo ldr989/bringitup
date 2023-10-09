@@ -31,26 +31,28 @@ export default class MiniSlider extends Slider {
         }
     }
 
+    nextSlide() {
+        if (
+            this.slides[1].tagName == "BUTTON" &&
+            this.slides[2].tagName == "BUTTON"
+        ) {
+            this.container.appendChild(this.slides[0]); // slide
+            this.container.appendChild(this.slides[0]); // btn
+            this.container.appendChild(this.slides[0]); // btn
+            this.decorizeSlides();
+        } else if (this.slides[1].tagName == "BUTTON") {
+            this.container.appendChild(this.slides[0]); // slide
+            this.container.appendChild(this.slides[0]); // btn
+            this.decorizeSlides();
+        } else {
+            this.container.appendChild(this.slides[0]);
+            this.decorizeSlides();
+        }
+    }
+
     bindTriggers() {
         this.next.addEventListener("click", () => {
-            if (
-                this.slides[1].tagName == "BUTTON" &&
-                this.slides[2].tagName == "BUTTON"
-            ) {
-                this.container.appendChild(this.slides[0]); // slide
-                this.container.appendChild(this.slides[1]); // btn
-                this.container.appendChild(this.slides[2]); // btn
-                this.decorizeSlides();
-                console.log("first condition");
-            } else if (this.slides[1].tagName == "BUTTON") {
-                console.log("second condition");
-                this.container.appendChild(this.slides[0]); // slide
-                this.container.appendChild(this.slides[1]); // btn
-                this.decorizeSlides();
-            } else {
-                this.container.appendChild(this.slides[0]);
-                this.decorizeSlides();
-            }
+            this.nextSlide();
         });
 
         this.prev.addEventListener("click", () => {
@@ -75,5 +77,20 @@ export default class MiniSlider extends Slider {
 
         this.bindTriggers();
         this.decorizeSlides();
+
+        if (this.autoplay) {
+            let intervalId = setInterval(() => this.nextSlide(), 5000);
+            setInterval(intervalId);
+
+            for (let i = 0; i < this.slides.length; i++) {
+                this.slides[i].addEventListener("pointerover", () => {
+                    clearInterval(intervalId);
+                });
+
+                this.slides[i].addEventListener("pointerout", () => {
+                    intervalId = setInterval(() => this.nextSlide(), 5000);
+                });
+            }
+        }
     }
 }
