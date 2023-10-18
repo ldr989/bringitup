@@ -1,10 +1,6 @@
 import Slider from "./slider";
 
 export default class MainSlider extends Slider {
-    constructor(btns) {
-        super(btns);
-    }
-
     showSlides(n) {
         if (n > this.slides.length) {
             this.slideIndex = 1;
@@ -30,10 +26,6 @@ export default class MainSlider extends Slider {
             /* empty */
         }
 
-        // this.slides.forEach((slide) => {
-        //     slide.style.display = "none";
-        // });
-
         for (let i = 0; i < this.slides.length; i++) {
             this.slides[i].style.display = "none";
         }
@@ -45,32 +37,46 @@ export default class MainSlider extends Slider {
         this.showSlides((this.slideIndex += n));
     }
 
+    moveSlides(n, btn) {
+        btn.forEach((item) => {
+            item.addEventListener("click", (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                this.plusSlides(n);
+            });
+        });
+    }
+
+    bindTriggers() {
+        this.btns.forEach((btn) => {
+            btn.addEventListener("click", () => {
+                this.plusSlides(1);
+            });
+
+            btn.parentNode.previousElementSibling.addEventListener(
+                "click",
+                (e) => {
+                    e.preventDefault();
+                    this.slideIndex = 1;
+                    this.showSlides(this.slideIndex);
+                }
+            );
+        });
+
+        this.moveSlides(-1, this.prev);
+        this.moveSlides(1, this.next);
+    }
+
     render() {
-        try {
+        if (this.container) {
             try {
                 this.hanson = document.querySelector(".hanson");
             } catch (e) {
                 /* empty */
             }
 
-            this.btns.forEach((btn) => {
-                btn.addEventListener("click", () => {
-                    this.plusSlides(1);
-                });
-
-                btn.parentNode.previousElementSibling.addEventListener(
-                    "click",
-                    (e) => {
-                        e.preventDefault();
-                        this.slideIndex = 1;
-                        this.showSlides(this.slideIndex);
-                    }
-                );
-            });
-
+            this.bindTriggers();
             this.showSlides(this.slideIndex);
-        } catch (e) {
-            /* empty */
         }
     }
 }
